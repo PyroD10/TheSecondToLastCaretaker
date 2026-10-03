@@ -3,8 +3,8 @@
 ## 1. Install UE4SS
 1. Nexus: https://www.nexusmods.com/thelastcaretaker/mods/4 — download the latest file.
 2. Game folder: Steam → right-click *The Last Caretaker* → Manage → Browse local files.
-   The exe is at `...\The Last Caretaker\VoyageSteam\Binaries\Win64\VoyageSteam-Win64-Shipping.exe`
-   (path to verify — note the real one here: `__________`).
+   On Dan's PC: `E:\SteamLibrary\steamapps\common\Voyage\Voyage\Binaries\Win64\`
+   (Steam folder is "Voyage"). UE4SS: `Win64\ue4ss\`, mods: `Win64\ue4ss\Mods\`, log: `Win64\ue4ss\UE4SS.log`.
 3. Follow the Nexus page's install instructions (normally: unzip next to the exe so you get
    `Win64\ue4ss\` with `UE4SS.dll`, `UE4SS-settings.ini`, `Mods\`, plus `dwmapi.dll` as loader).
 4. Start the game once. Success = a console window opens alongside the game and
@@ -13,7 +13,9 @@
    `docs/01-research.md` → open Q2, and note the game version shown in the main menu.
 
 ## 2. Install the Lua probe
-1. Copy the folder `mods\PositionProbe` from this repo into `Win64\ue4ss\Mods\`.
+1. Link the folder `mods\PositionProbe` from this repo into `Win64\ue4ss\Mods\` (Dan uses a symlink —
+   good, edits in the repo are live). CMD as admin:
+   `mklink /D "E:\SteamLibrary\steamapps\common\Voyage\Voyage\Binaries\Win64\ue4ss\Mods\PositionProbe" "C:\Users\Ich\Desktop\Projects\TheSecondToLastCaretaker\mods\PositionProbe"`
    Result: `Win64\ue4ss\Mods\PositionProbe\Scripts\main.lua` and `...\PositionProbe\enabled.txt`.
 2. Start the game, load a save, walk around. The UE4SS console should print lines like
    `[Probe] X=... Y=... Z=... Yaw=...` twice a second.

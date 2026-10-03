@@ -7,6 +7,7 @@ local UEHelpers = require("UEHelpers")
 
 local INTERVAL_MS = 500
 local lastClassName = nil
+local lastLevelName = nil
 
 local function fmt(v) return string.format("%.1f", v) end
 
@@ -29,6 +30,19 @@ local function probe()
         print(string.format("[Probe] Pawn class: %s\n", className))
         lastClassName = className
     end
+
+    -- Level/world name, logged on change — candidate for the "context" field in the net protocol.
+    -- Isolated in its own pcall so a wrong call here never kills the position print.
+    pcall(function()
+        local world = UEHelpers.GetWorld()
+        if world and world:IsValid() then
+            local levelName = world:GetFName():ToString()
+            if levelName ~= lastLevelName then
+                print(string.format("[Probe] World: %s\n", levelName))
+                lastLevelName = levelName
+            end
+        end
+    end)
 
     local loc = pawn:K2_GetActorLocation()
     local rot = pawn:K2_GetActorRotation()

@@ -45,8 +45,23 @@ the point is to have something now and to learn.
   exact UE4SS build they run under (ABI is not stable across UE4SS versions).
 - UE4SS reference: https://docs.ue4ss.com/ (Lua API, C++ mod guide).
 
+## Findings from the live game (Phase 1, 2026-10-03)
+- Install path: `E:\SteamLibrary\steamapps\common\Voyage\Voyage\Binaries\Win64\` — the Steam
+  folder is named **Voyage**, not "The Last Caretaker". UE4SS lives in `Win64\ue4ss\`, mods in `Win64\ue4ss\Mods\`.
+- Nexus UE4SS package version string: `UE4SS_v3.0.1-1125-g527a483b` → RE-UE4SS commit **527a483b**
+  (from the Nexus page; confirm against line 1 of `UE4SS.log`). Ships with the stock Lua mods
+  (CheatManagerEnabler, ConsoleEnabler, BPModLoader, Keybinds …) enabled via `mods.txt`; our mod loads via `enabled.txt`.
+- Player pawn classes (from `PositionProbe`):
+  - Main menu: `BlueprintGeneratedClass /Game/Blueprints/Game/BP_VoyageMenuPawn.BP_VoyageMenuPawn_C` — position reads 0/0/0.
+  - In game: `BlueprintGeneratedClass /Game/Blueprints/BP_FirstPersonCharacter_New.BP_FirstPersonCharacter_New_C`
+  → "in world" = pawn class is the first-person character; menu pawn = hide ghost.
+- `UEHelpers.GetPlayerController()`, `pc.Pawn`, `K2_GetActorLocation/Rotation` all work through reflection. No offsets needed.
+- World coordinates are large (X≈608 000, Y≈−261 000); Z oscillates ±10 cm·10 while standing still — the player is on
+  a boat on water. Position sync must send absolute world coords as float64 or relative-to-origin float32
+  (float32 at 6×10⁵ has ~0.06 cm resolution — fine, but keep an eye on it).
+- `CheatManagerEnabler` re-runs on each `ClientRestart` (level load/respawn) — a usable hook for "pawn changed".
+
 ## Open questions (need Dan)
-1. LAN or internet between the players? Decides NAT handling (see roadmap).
-2. Exact UE4SS build the Nexus package ships (version string in `UE4SS.log`). Our C++ mod must
-   build against that same commit.
+1. ~~LAN or internet?~~ **Decided: Tailscale** (see ADR-0002).
+2. Confirm UE4SS version from line 1 of `UE4SS.log` is `v3.0.1-1125-g527a483b`, and note the game version (main menu).
 3. Does the Nexus package include the CXX header dump option / Live View GUI enabled?
