@@ -16,7 +16,7 @@ Fresh start — not based on the abandoned `Gentlemannn/LastCaretaker-Multiplaye
 - Dan (owner) builds, installs, runs and tests on his PC and reports results following
   `docs/05-testing-protocol.md`. Treat every in-game behaviour as unverified until Dan confirms it.
 - When a step needs a game artefact (object dump, header dump, log), ask Dan for it and tell him
-  exactly where it lands on disk. Dumps go in `dumps/` (git-ignored except for `.gitkeep`).
+  exactly where it lands on disk. Dumps are read from `ue4ss/` (symlink to the game's UE4SS folder, git-ignored).
 
 ## Hard rules
 - **Never hardcode memory addresses or pointer chains.** Use UE4SS reflection
@@ -24,7 +24,7 @@ Fresh start — not based on the abandoned `Gentlemannn/LastCaretaker-Multiplaye
 - Never modify or redistribute game files. Everything ships as loose files under `Mods/`.
 - Nothing that touches other players' saves or world state. Read local state, render remote state.
 - Don't guess Unreal class/function names for this game. Look them up in the current object dump
-  in `dumps/` or ask Dan to dump. Engine-level names (APawn, APlayerController, K2_GetActorLocation)
+  in `ue4ss/UE4SS_ObjectDump.txt` / `ue4ss/CXXHeaderDump/` or ask Dan to re-dump. Engine-level names (APawn, APlayerController, K2_GetActorLocation)
   are fine.
 - Keep the Lua probe (`mods/PositionProbe`) working as a smoke test even after the C++ mod exists.
 
@@ -32,11 +32,11 @@ Fresh start — not based on the abandoned `Gentlemannn/LastCaretaker-Multiplaye
 ```
 CLAUDE.md                this file
 README.md                short public-facing description
-docs/                    numbered docs, read in order; decisions/ holds ADRs
+docs/                    numbered docs, read in order; 06 = game names table; decisions/ holds ADRs
 mods/<ModName>/          UE4SS Lua mods, drop-in ready (Scripts/main.lua + enabled.txt)
 src/                     C++ mod sources (CMake, builds against RE-UE4SS) — Phase 2+
 tools/                   helper scripts (dump parsing etc.), Python 3
-dumps/                   game object/header dumps from Dan's PC (git-ignored)
+ue4ss/                   symlink to the game's ue4ss folder (dumps, log, settings) — git-ignored
 ```
 
 ## Conventions

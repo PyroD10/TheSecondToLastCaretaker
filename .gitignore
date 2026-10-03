@@ -1,6 +1,5 @@
-# game dumps are large and per-version
-dumps/*
-!dumps/.gitkeep
+# symlink to the game's ue4ss folder (dumps, log, settings) — large, per-version, not ours
+ue4ss
 # C++ build output
 src/build/
 src/out/

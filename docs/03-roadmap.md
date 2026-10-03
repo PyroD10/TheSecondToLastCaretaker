@@ -5,11 +5,11 @@ Update the status column as things happen. Legend: ⬜ todo · 🟨 in progress 
 | Phase | Step | Owner | Status | Notes |
 |---|---|---|---|---|
 | 0 | Install UE4SS from Nexus, game launches with UE4SS console | Dan | ✅ | 2026-10-03 |
-| 0 | Record UE4SS version string + game version | Dan | 🟨 | Nexus says g527a483b; confirm via `UE4SS.log` line 1 + game version |
+| 0 | Record UE4SS version string + game version | Dan | 🟨 | UE4SS ✅ `v3.0.1 #527a483b`; game version still needed |
 | 0 | Decide LAN vs internet | Dan | ✅ | Tailscale, ADR-0002 |
 | 1 | Lua probe `PositionProbe` prints local position every 500 ms | Claude / Dan | ✅ | works first try; pawn classes identified |
-| 1 | Object dump + CXX header dump in `dumps/` | Dan | ⬜ | `04-dev-setup.md` §3 |
-| 1 | Identify player pawn class, character mesh, level-name source | Claude | 🟨 | pawn class ✅ (`BP_FirstPersonCharacter_New_C`); mesh + level name need dumps |
+| 1 | Object dump + CXX header dump reachable via `ue4ss/` | Dan | 🟨 | headers ✅; object dump was taken in menu → re-dump in-game |
+| 1 | Identify player pawn class, character mesh, level-name source | Claude | 🟨 | see `06-game-reference.md`; body mesh + map name need in-game dump |
 | 2 | C++ toolchain: VS 2022 + CMake, RE-UE4SS cloned at the Nexus build's commit | Dan | ⬜ | `04-dev-setup.md` §4 |
 | 2 | Hello-world C++ mod `GhostNet` loads, logs once per second | Claude / Dan | ⬜ | |
 | 2 | C++ reads local pawn transform (same output as Lua probe) | Claude / Dan | ⬜ | |

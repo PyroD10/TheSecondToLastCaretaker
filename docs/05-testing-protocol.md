@@ -7,7 +7,7 @@ Claude cannot run the game. Every test report should contain:
 3. **Steps done** — short.
 4. **Result** — ✅ / ❌ / partial, one sentence.
 5. **Evidence** — paste the relevant `UE4SS.log` lines (search for `[Probe]` or `[GhostNet]`),
-   or drop the whole log into `dumps\logs\<date>-<what>.log`. Screenshots → `dumps\screens\`.
+   or drop the whole log into `docs\test-logs\<date>-<what>.log`. Screenshots → `docs\test-logs\`.
 6. **Anything odd** — stutter, crash, console spam, FPS drop.
 
 Template:

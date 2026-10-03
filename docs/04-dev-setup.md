@@ -27,7 +27,9 @@ In `UE4SS-settings.ini` set `GuiConsoleEnabled = 1` and `GuiConsoleVisible = 1` 
 In the GUI console (Live View tab / Dumpers tab):
 - **Dump Objects** → writes `UE4SS_ObjectDump.txt` next to UE4SS. Do this *in-game with a save loaded*.
 - **Generate CXX Headers** → folder `CXXHeaderDump\`.
-Copy both into this repo's `dumps\` folder (git-ignored). Then tell Claude "dumps are in".
+Link the ue4ss folder into the repo once (CMD as admin) so the dumps are always current:
+`mklink /D "C:\Users\Ich\Desktop\Projects\TheSecondToLastCaretaker\ue4ss" "E:\SteamLibrary\steamapps\common\Voyage\Voyage\Binaries\Win64\ue4ss"` (done 2026-10-03)
+Then tell Claude "dumps are in". **Dump while a save is loaded**, not in the menu — the menu world is `/Game/Maps/Empty` and has no character.
 
 ## 4. C++ toolchain (Phase 2)
 - Visual Studio 2022 with "Desktop development with C++" workload (MSVC v143, Windows SDK).
