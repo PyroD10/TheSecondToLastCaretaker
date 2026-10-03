@@ -1,0 +1,17 @@
+# game dumps are large and per-version
+dumps/*
+!dumps/.gitkeep
+# C++ build output
+src/build/
+src/out/
+*.dll
+*.pdb
+*.exp
+*.lib
+# IDE / OS
+.vs/
+.vscode/
+Thumbs.db
+desktop.ini
+# UE4SS runtime junk if someone copies it in
+UE4SS.log
