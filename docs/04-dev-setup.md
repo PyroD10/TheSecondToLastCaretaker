@@ -32,25 +32,37 @@ Link the ue4ss folder into the repo once (CMD as admin) so the dumps are always 
 Then tell Claude "dumps are in". **Dump while a save is loaded**, not in the menu — the menu world is `/Game/Maps/Empty` and has no character.
 
 ## 4. C++ toolchain (Phase 2)
-- Visual Studio 2022 with "Desktop development with C++" workload (MSVC v143, Windows SDK).
-- CMake ≥ 3.22 (ships with VS or https://cmake.org). Git.
-- Rust toolchain (`rustup`) — RE-UE4SS builds a Rust dependency (patternsleuth). Verify this is
-  still required for the commit we pin; if `cmake` complains about cargo, install it.
-- Clone RE-UE4SS **at the exact commit** matching the Nexus build (from the version string in
-  `UE4SS.log`): in CMD inside `src\`:
-  ```
-  git clone --recursive https://github.com/UE4SS-RE/RE-UE4SS.git
-  cd RE-UE4SS
-  git checkout <commit>
-  ```
-- Configure/build (Claude will provide a `src\CMakeLists.txt` in Phase 2):
-  ```
-  cmake -S src -B src\build -G "Visual Studio 17 2022"
-  cmake --build src\build --config Game__Shipping__Win64
-  ```
-  Expect the first build to take a while (UE4SS itself compiles).
-- Install: `src\build\...\GhostNet.dll` → `Win64\ue4ss\Mods\GhostNet\dlls\main.dll`
-  plus `Mods\GhostNet\enabled.txt`.
+Requirements from the RE-UE4SS README (verified 2026-10-03):
+- **Visual Studio 2022 ≥ 17.13** with "Desktop development with C++" (needs MSVC ≥ 19.43, C++23). Check: Help → About.
+  Also tick "C++ CMake tools for Windows" in the installer — gives CMake ≥ 3.22 and Ninja.
+- **Rust toolchain ≥ 1.73** — https://rustup.rs (default install, then reopen CMD so `cargo --version` works).
+- **GitHub account linked to an Epic Games account.** RE-UE4SS has a submodule with Unreal-derived headers
+  that only members of the EpicGames GitHub org can clone. Link at https://www.epicgames.com/account/connections
+  → GitHub, accept the invitation e-mail from GitHub. Without this `git submodule update` fails with "repository not found".
+- Git configured so HTTPS clones of private repos work (Git Credential Manager prompts once).
+
+Clone RE-UE4SS **at the exact commit** of the installed UE4SS (`UE4SS.log` line 2 → `Git SHA #527a483b`).
+In CMD, from the repo root:
+```
+cd src
+git clone https://github.com/UE4SS-RE/RE-UE4SS.git
+cd RE-UE4SS
+git checkout 527a483b
+git submodule update --init --recursive
+```
+(Don't add `--remote` to the submodule command — the README warns it breaks dependencies.)
+Configure and build (CMD, repo root). The first build compiles all of UE4SS — expect 10–30 min and several GB:
+```
+cmake -S src -B src\build -G "Visual Studio 17 2022"
+cmake --build src\build --config Game__Shipping__Win64 --target GhostNet
+```
+GUI alternative: open `src\build\TheSecondToLastCaretaker.sln` in Visual Studio, pick configuration
+`Game__Shipping__Win64`, build the `GhostNet` project.
+
+Install: find `main.dll` under `src\build\GhostNet\` → copy to `ue4ss\Mods\GhostNet\dlls\main.dll`,
+create an empty `ue4ss\Mods\GhostNet\enabled.txt`. (A symlink `ue4ss\Mods\GhostNet` → a folder in the repo
+works too, like PositionProbe.) Start the game: `UE4SS.log` should show `[GhostNet] loaded v0.2.0`, then once
+per second `[GhostNet] X=… Y=… Z=…` matching the Lua probe.
 
 ## 5. Things that commonly go wrong
 - Game updated → Nexus UE4SS build may lag a few days; our C++ DLL must be rebuilt if UE4SS changed.

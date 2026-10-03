@@ -14,3 +14,4 @@ Thumbs.db
 desktop.ini
 # UE4SS runtime junk if someone copies it in
 UE4SS.log
+src/RE-UE4SS/
